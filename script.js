@@ -1,8 +1,9 @@
 const button = document.querySelector('#button')
 const list = document.querySelector("ul")
-const textBox = document.querySelector("input") 
+let textBox = document.querySelector("input") 
 let taskID = ""
 document.addEventListener("keypress", checkForEnter)
+button.addEventListener("click", addItem)
 
 if (window.localStorage.length !== 0){
   let numberOfItemsInLocalStorage = window.localStorage.length
@@ -25,15 +26,12 @@ function addItem(){
   list.lastChild.setAttribute("id", taskID)
   window.localStorage.setItem(taskID, textBox.value)
   textBox.value = ""
-
   }
-function popItem(e){
-  taskID = e.currentTarget.dataset.id
 
+function popItem(e){
+  taskID = e.currentTarget.id
   window.localStorage.removeItem(taskID)
   e.currentTarget.remove()
-  
-
 }
 
 function addItemFromLocalStorage(key, text){
@@ -42,8 +40,6 @@ function addItemFromLocalStorage(key, text){
   list.lastChild.setAttribute("id", key)
   list.lastChild.addEventListener("click", popItem)
   }
-
-button.addEventListener("click", add)
 
 
 
