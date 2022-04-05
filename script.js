@@ -19,7 +19,7 @@ function checkForEnter(e) {
 
 function addItem() {
   textBox = document.querySelector("input")
-  if (textBox.textContent ===""){
+  if (textBox.value ===""){
     return;
   }
   list.appendChild(document.createElement("li"));
