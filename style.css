@@ -1,0 +1,9 @@
+li{
+
+  width: fit-content;
+  min-width: 20px;
+}
+
+ul [contenteditable]{
+  outline: 0;
+}

@@ -13,18 +13,22 @@ if (window.localStorage.TodoItems !== undefined) {
   itemsNameArray.forEach(addItemFromLocalStorage);
 }
 function checkForEnter(e) {
-  if (e.key === "Enter")
+  if (e.key === "Enter"){
+    e.preventDefault()
     addItem();
+    textBox.focus()
+  }
 }
 
 function addItem() {
   textBox = document.querySelector("input")
-  if (textBox.textContent ===""){
+  if (textBox.value ===""){
     return;
   }
   list.appendChild(document.createElement("li"));
   list.lastChild.textContent = textBox.value;
-  list.lastChild.addEventListener("click", popItem);
+  list.lastChild.setAttribute("contenteditable", "true");
+  list.lastChild.addEventListener("focusout", saveToLocalStorage);
   saveToLocalStorage();
   textBox.value = "";
 }
@@ -32,14 +36,15 @@ function addItem() {
 function addItemFromLocalStorage(taskName) {
   list.appendChild(document.createElement("li"));
   list.lastChild.textContent = taskName;
-  list.lastChild.addEventListener("click", popItem);
+  list.lastChild.setAttribute("contenteditable", "true");
+  list.lastChild.addEventListener("focusout", saveToLocalStorage);
   saveToLocalStorage();
 }
 
-function popItem(e) {
-  e.currentTarget.remove();
-  saveToLocalStorage();
-}
+// function popItem(e) {;
+//   e.currentTarget.remove();
+//   saveToLocalStorage();
+// };
 
 function saveToLocalStorage(){
   items = document.querySelectorAll("li");
