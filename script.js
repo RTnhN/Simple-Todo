@@ -1,45 +1,52 @@
-const button = document.querySelector('#button')
-const list = document.querySelector("ul")
-let textBox = document.querySelector("input") 
-let taskID = ""
-document.addEventListener("keypress", checkForEnter)
-button.addEventListener("click", addItem)
+const button = document.querySelector('#button');
+const list = document.querySelector("ul");
+let textBox = document.querySelector("input");
+let taskID = "";
+let items = document.querySelectorAll("li");
+let itemsArray = [];
+let itemsNameArray = [];
+document.addEventListener("keypress", checkForEnter);
+button.addEventListener("click", addItem);
 
-if (window.localStorage.length !== 0){
-  let numberOfItemsInLocalStorage = window.localStorage.length
-  for (let i = 0; i < numberOfItemsInLocalStorage; i++){
-    addItemFromLocalStorage(window.localStorage.key(i),window.localStorage.getItem(window.localStorage.key(i)))
-  }
+if (window.localStorage.TodoItems !== undefined) {
+  itemsNameArray = JSON.parse(window.localStorage.TodoItems);
+  itemsNameArray.forEach(addItemFromLocalStorage);
 }
-function  checkForEnter(e){
+function checkForEnter(e) {
   if (e.key === "Enter")
-    addItem(e)
+    addItem();
 }
 
-function addItem(){
-  textBox = document.querySelector("input") 
-  
-  list.appendChild(document.createElement("li"))
-  list.lastChild.textContent = textBox.value
-  list.lastChild.addEventListener("click", popItem)
-  taskID = Math.floor(Math.random()*10000)
-  list.lastChild.setAttribute("id", taskID)
-  window.localStorage.setItem(taskID, textBox.value)
-  textBox.value = ""
+function addItem() {
+  textBox = document.querySelector("input")
+  if (textBox.textContent ===""){
+    return;
   }
-
-function popItem(e){
-  taskID = e.currentTarget.id
-  window.localStorage.removeItem(taskID)
-  e.currentTarget.remove()
+  list.appendChild(document.createElement("li"));
+  list.lastChild.textContent = textBox.value;
+  list.lastChild.addEventListener("click", popItem);
+  saveToLocalStorage();
+  textBox.value = "";
 }
 
-function addItemFromLocalStorage(key, text){
-  list.appendChild(document.createElement("li"))
-  list.lastChild.textContent = text
-  list.lastChild.setAttribute("id", key)
-  list.lastChild.addEventListener("click", popItem)
-  }
+function addItemFromLocalStorage(taskName) {
+  list.appendChild(document.createElement("li"));
+  list.lastChild.textContent = taskName;
+  list.lastChild.addEventListener("click", popItem);
+  saveToLocalStorage();
+}
+
+function popItem(e) {
+  e.currentTarget.remove();
+  saveToLocalStorage();
+}
+
+function saveToLocalStorage(){
+  items = document.querySelectorAll("li");
+  itemsArray = Array.from(items);
+  itemsNameArray = itemsArray.map(item => item.textContent);
+  window.localStorage.setItem("TodoItems", JSON.stringify(itemsNameArray));
+}
 
 
 
